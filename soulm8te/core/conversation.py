@@ -18,8 +18,6 @@ from core.self_improve import SelfImprover
 from llm import backend as llm_backend
 
 STATE_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "state")
-MEMORY_PATH = os.path.join(STATE_DIR, "memory.json")
-SELF_LOG_PATH = os.path.join(STATE_DIR, "self_improve.json")
 
 FACT_PATTERNS = [
     (r"اسم(م| من) (.+?) است", "name"),
@@ -29,12 +27,14 @@ FACT_PATTERNS = [
 
 
 class Companion:
-    def __init__(self):
-        self.memory = Memory(MEMORY_PATH)
+    def __init__(self, state_dir: str | None = None):
+        base = state_dir or STATE_DIR
+        os.makedirs(base, exist_ok=True)
+        self.memory = Memory(os.path.join(base, "memory.json"))
         self.emotional = EmotionalEngine()
         self.relationship = RelationshipTracker()
         self.proactive = ProactiveEngine(self.memory, self.emotional, self.relationship)
-        self.self_improver = SelfImprover(SELF_LOG_PATH)
+        self.self_improver = SelfImprover(os.path.join(base, "self_improve.json"))
         self.backend = llm_backend.build_backend()
         self._exchange_log: list[dict] = []
         self._last_self_improve = 0.0

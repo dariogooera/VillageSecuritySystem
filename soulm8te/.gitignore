@@ -1,0 +1,4 @@
+__pycache__/
+*.pyc
+state/
+offline_test.txt

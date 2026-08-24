@@ -1,0 +1,10 @@
+[
+  {
+    "ts": 1787532138.0180387,
+    "note": "user is often sad; comfort faster after each exchange",
+    "patch": {
+      "emotional.loneliness_fall_per_exchange": 0.1
+    },
+    "code": "apply_patch({\"emotional.loneliness_fall_per_exchange\": 0.1})"
+  }
+]
